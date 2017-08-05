@@ -44,11 +44,11 @@ class ImageInput extends React.Component {
   static propTypes = {
     className: PropTypes.string,
     name: PropTypes.string,
-    maxHeight: PropTypes.number
+    maxHeight: PropTypes.number,
   }
 
   state = {
-    value: ''
+    value: '',
   }
 
   handleFileChange = (event) => {
@@ -57,16 +57,16 @@ class ImageInput extends React.Component {
     if (file && file.type.match(/^image\//)) {
       readFileAsDataURL(file).then(originalURL => {
         resizeImage(originalURL, this.canvas, this.props.maxHeight).then(url => {
-          this.setState({ value: url })
+          this.setState({value: url})
         })
       })
     } else {
-      this.setState({ value: '' })
+      this.setState({value: ''})
     }
   }
 
   handleFormReset = () => {
-    this.setState({ value: '' })
+    this.setState({value: ''})
   }
 
   componentDidMount() {
@@ -79,11 +79,11 @@ class ImageInput extends React.Component {
   }
 
   render() {
-    const { className, name } = this.props
-    const { value } = this.state
+    const {className, name} = this.props
+    const {value} = this.state
 
     const style = {
-      position: 'relative'
+      position: 'relative',
     }
 
     if (value) {
@@ -95,7 +95,7 @@ class ImageInput extends React.Component {
 
     return (
       <div className={className} style={style}>
-        <input type="hidden" name={name} value={value} />
+        <input type="hidden" name={name} value={value}/>
         <input
           ref={node => this.fileInput = node}
           type="file"
@@ -106,7 +106,7 @@ class ImageInput extends React.Component {
             left: 0,
             width: '100%',
             height: '100%',
-            opacity: 0
+            opacity: 0,
           }}
         />
       </div>

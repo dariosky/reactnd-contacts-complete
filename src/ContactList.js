@@ -1,54 +1,53 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import escapeStringRegexp from 'escape-string-regexp'
 import sortBy from 'sort-by'
-import {getAll} from './utils/ContactsAPI';
+import * as ContactsAPI from './utils/ContactsAPI'
 
 class ContactList extends Component {
 
   constructor(props, context) {
-    super(props, context);
+    super(props, context)
     this.state = {
       query: '',
-      contacts: null
-    };
+      contacts: null,
+    }
 
   }
 
   updateQuery = (query) => {
     this.setState({
-      query: query.trim()
+      query: query.trim(),
     })
-  };
+  }
 
   static propTypes = {
     onDeleteContact: PropTypes.func.isRequired,
-  };
+  }
 
   componentDidMount() {
-    getAll().then((contacts) => {
+    ContactsAPI.getAll().then((contacts) => {
         this.setState({
-            contacts: contacts
-          }
+            contacts: contacts,
+          },
         )
-      }
+      },
     )
   }
 
-
   render() {
-    console.log(this.state);
-    const {contacts, query} = this.state;
+    console.log(this.state)
+    const {contacts, query} = this.state
     const {onDeleteContact} = this.props,
-      match = new RegExp(escapeStringRegexp(query), 'i');
+      match = new RegExp(escapeStringRegexp(query), 'i')
 
     if (contacts === null) {
       return <div>Loading contacts...</div>
     }
 
     const filteredContact = query ? contacts.filter(
-      (e) => match.test(e.name)
-    ) : contacts;
+      (e) => match.test(e.name),
+    ) : contacts
 
     return (
       <div className="list-contacts">
@@ -83,8 +82,8 @@ class ContactList extends Component {
 
 class Contact extends Component {
   render() {
-    const {contact} = this.props;
-    const {onDeleteContact} = this.props;
+    const {contact} = this.props
+    const {onDeleteContact} = this.props
 
     return <li className="contact-list-item">
       <img className="contact-avatar" src={contact.avatarURL} alt=""/>
