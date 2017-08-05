@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import ContactList from './ContactList'
+import ContactList from './components/ContactList'
 import * as ContactsAPI from './utils/ContactsAPI'
 
 class App extends Component {
@@ -20,10 +20,10 @@ class App extends Component {
 
   deleteContact = (contact) => {
     console.log("Deleting", contact.id)
-    ContactsAPI.remove(contact)
     this.setState((state) => ({
       contacts: state.contacts.filter((c) => c.id !== contact.id),
     }))
+    ContactsAPI.remove(contact)
   }
 
 

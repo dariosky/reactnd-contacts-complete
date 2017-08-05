@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import escapeStringRegexp from 'escape-string-regexp'
 import sortBy from 'sort-by'
+import ContactMessage from './ContactMessage'
 
 class ContactList extends Component {
 
@@ -30,13 +31,31 @@ class ContactList extends Component {
     const {contacts, onDeleteContact} = this.props,
       match = new RegExp(escapeStringRegexp(query), 'i')
 
-    if (contacts === null) {
-      return <div>Loading contacts...</div>
-    }
-
-    const filteredContact = query ? contacts.filter(
+    const filteredContact = (query && contacts !== null) ? contacts.filter(
       (e) => match.test(e.name),
     ) : contacts
+
+
+    let body = []
+    if (contacts === null)
+      body.push(<ContactMessage message="Loading contacts..."/>)
+    else if (contacts.length === 0) body.push(
+      <ContactMessage message="No contacts"/>,
+    )
+    else {
+      if (filteredContact.length !== contacts.length)
+        body.push(<div className="showing-contacts">
+            {`Showing ${filteredContact.length} out of ${contacts.length}`}
+          </div>,
+        )
+      body.push(<ol className="list-contacts">
+        {filteredContact.sort(sortBy('name', 'email')).map((contact, index) => (
+          <Contact key={contact.id} contact={contact}
+                   onDeleteContact={onDeleteContact}/>
+        ))
+        }
+      </ol>)
+    }
 
     return (
       <div className="list-contacts">
@@ -50,20 +69,7 @@ class ContactList extends Component {
                  }}
           />
         </div>
-
-        {filteredContact.length !== contacts.length && (
-          <div className="showing-contacts">
-            Showing {filteredContact.length} out of {contacts.length}
-          </div>
-        )}
-
-        <ol className="list-contacts">
-          {filteredContact.sort(sortBy('name', 'email')).map((contact, index) => (
-            <Contact key={contact.id} contact={contact}
-                     onDeleteContact={onDeleteContact}/>
-          ))
-          }
-        </ol>
+        {body}
       </div>
     )
   }
@@ -88,5 +94,6 @@ class Contact extends Component {
     </li>
   }
 }
+
 
 export default ContactList
