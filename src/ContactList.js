@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import escapeStringRegexp from 'escape-string-regexp'
 import sortBy from 'sort-by'
-import * as ContactsAPI from './utils/ContactsAPI'
 
 class ContactList extends Component {
 
@@ -10,7 +9,6 @@ class ContactList extends Component {
     super(props, context)
     this.state = {
       query: '',
-      contacts: null,
     }
 
   }
@@ -22,23 +20,14 @@ class ContactList extends Component {
   }
 
   static propTypes = {
+    contacts: PropTypes.array.isRequired,
     onDeleteContact: PropTypes.func.isRequired,
-  }
-
-  componentDidMount() {
-    ContactsAPI.getAll().then((contacts) => {
-        this.setState({
-            contacts: contacts,
-          },
-        )
-      },
-    )
   }
 
   render() {
     console.log(this.state)
-    const {contacts, query} = this.state
-    const {onDeleteContact} = this.props,
+    const {query} = this.state
+    const {contacts, onDeleteContact} = this.props,
       match = new RegExp(escapeStringRegexp(query), 'i')
 
     if (contacts === null) {
