@@ -21,12 +21,12 @@ class ContactList extends Component {
   }
 
   static propTypes = {
-    contacts: PropTypes.array.isRequired,
+    contacts: PropTypes.array,
     onDeleteContact: PropTypes.func.isRequired,
+    goTo: PropTypes.func.isRequired,
   }
 
   render() {
-    console.log(this.state)
     const {query} = this.state
     const {contacts, onDeleteContact} = this.props,
       match = new RegExp(escapeStringRegexp(query), 'i')
@@ -38,9 +38,9 @@ class ContactList extends Component {
 
     let body = []
     if (contacts === null)
-      body.push(<ContactMessage message="Loading contacts..."/>)
+      body.push(<ContactMessage key='loading' message="Loading contacts..."/>)
     else if (contacts.length === 0) body.push(
-      <ContactMessage message="No contacts"/>,
+      <ContactMessage key="no" message="No contacts"/>,
     )
     else {
       if (filteredContact.length !== contacts.length)
@@ -48,7 +48,7 @@ class ContactList extends Component {
             {`Showing ${filteredContact.length} out of ${contacts.length}`}
           </div>,
         )
-      body.push(<ol className="list-contacts">
+      body.push(<ol key='list' className="list-contacts">
         {filteredContact.sort(sortBy('name', 'email')).map((contact, index) => (
           <Contact key={contact.id} contact={contact}
                    onDeleteContact={onDeleteContact}/>
@@ -68,6 +68,7 @@ class ContactList extends Component {
                    this.updateQuery(e.target.value)
                  }}
           />
+          <a href='#create' className="add-contact" onClick={() => this.props.goTo('create')}>Create a new contact</a>
         </div>
         {body}
       </div>
