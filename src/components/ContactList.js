@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import escapeStringRegexp from 'escape-string-regexp'
 import sortBy from 'sort-by'
 import ContactMessage from './ContactMessage'
+import {Link} from 'react-router-dom'
 
 class ContactList extends Component {
 
@@ -23,7 +24,6 @@ class ContactList extends Component {
   static propTypes = {
     contacts: PropTypes.array,
     onDeleteContact: PropTypes.func.isRequired,
-    goTo: PropTypes.func.isRequired,
   }
 
   render() {
@@ -68,7 +68,7 @@ class ContactList extends Component {
                    this.updateQuery(e.target.value)
                  }}
           />
-          <a href='#create' className="add-contact" onClick={() => this.props.goTo('create')}>Create a new contact</a>
+          <Link to='/create' className="add-contact">Create a new contact</Link>
         </div>
         {body}
       </div>

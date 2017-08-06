@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-const ContactMessage = (props) =>
-  <li className="contact-list-item">
+function ContactMessage(props) {
+  return <li className="contact-list-item">
     <span>{props.message}</span>
   </li>
+}
 
 
 ContactMessage.propTypes = {
